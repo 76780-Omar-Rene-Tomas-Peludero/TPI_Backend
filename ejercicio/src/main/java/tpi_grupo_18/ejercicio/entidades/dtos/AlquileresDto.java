@@ -13,7 +13,7 @@ public class AlquileresDto implements Serializable {
     private final LocalDateTime fechaHoraRetiro;
     private final LocalDateTime fechaHoraDevolucion;
     private final double monto;
-    private final EstacionesDto estacionRetiro;
-    private final EstacionesDto estacionDevolucion;
-    private final TarifasDto tarifa;
+//    private final EstacionesDto estacionRetiro;
+//    private final EstacionesDto estacionDevolucion;
+//    private final TarifasDto tarifa;
 }
