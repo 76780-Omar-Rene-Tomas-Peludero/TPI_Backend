@@ -18,6 +18,11 @@ public class Estacion {
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(generator = "ESTACIONES")
+    @TableGenerator(name = "ESTACIONES", table = "sqlite_sequence",
+                    pkColumnName = "name", valueColumnName = "seq",
+                    pkColumnValue = "ESTACIONES", initialValue = 1, allocationSize = 1
+    )
     private long estaciones_id; // Identificador de la estación
 
     @Column(name = "NOMBRE")

@@ -16,6 +16,11 @@ public class Tarifa {
 
     @Id
     @Column(name = "ID")
+    @GeneratedValue(generator = "TARIFAS")
+    @TableGenerator(name = "TARIFAS", table = "sqlite_sequence",
+            pkColumnName = "name", valueColumnName = "seq",
+            pkColumnValue = "TARIFAS", initialValue = 1, allocationSize = 1
+    )
     private long tarifa_id;   // ID: Identificador de la tarifa
 
     @Column(name = "TIPO_TARIFA")
