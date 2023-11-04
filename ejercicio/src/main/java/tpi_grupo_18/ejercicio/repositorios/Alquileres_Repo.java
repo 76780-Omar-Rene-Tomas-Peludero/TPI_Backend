@@ -6,4 +6,5 @@ import tpi_grupo_18.ejercicio.entidades.Alquiler;
 
 @Repository
 public interface Alquileres_Repo extends JpaRepository<Alquiler,Long> {
+    Alquiler findByIdCliente(String idCliente);
 }

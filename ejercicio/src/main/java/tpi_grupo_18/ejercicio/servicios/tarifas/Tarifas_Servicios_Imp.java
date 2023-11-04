@@ -12,49 +12,37 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class Tarifas_Servicios_Imp implements Tarifas_Servicios{
+public class Tarifas_Servicios_Imp implements Tarifas_Servicios {
 
     private final Tarifa_Repo tarifas_repo;
-    private final Tarifas_DTOMapper DTOmapper;
-    private final Tarifas_Mapper mapper;
 
     @Override
-    public TarifasDto add(TarifasDto entity) {
-        Optional<Tarifa> tarifas = Stream.of(entity).map(mapper).findFirst();
-        try {
-            this.tarifas_repo.save(tarifas.get());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return tarifas.map(DTOmapper).orElseThrow();
+    public Tarifa add(Tarifa entity) {
+        return this.tarifas_repo.save(entity);
     }
 
     @Override
-    public TarifasDto update(TarifasDto entity) {
-        Optional<Tarifa> tarifas = Stream.of(entity).map(mapper).findFirst();
+    public Tarifa update(Tarifa entity) {
+        /*Optional<Tarifa> tarifas = Stream.of(entity).map(mapper).findFirst();
         tarifas.ifPresent(tarifas_repo::save);
-        return tarifas.map(DTOmapper).orElseThrow();
+        return tarifas.map(DTOmapper).orElseThrow();*/
+        return null;
     }
 
     @Override
-    public TarifasDto delete(Long id) {
-        TarifasDto tarifasDto = this.getById(id);
-        if (tarifasDto != null) {
-            Optional<Tarifa> tarifas = Stream.of(tarifasDto).map(mapper).findFirst();
-            tarifas.ifPresent(tarifas_repo::delete);
-        }
-        return tarifasDto;
+    public Tarifa delete(Long id) {
+        Tarifa tarifa = this.getById(id);
+        this.tarifas_repo.delete(tarifa);
+        return tarifa;
     }
 
     @Override
-    public TarifasDto getById(Long id) {
-        Optional<Tarifa> tarifa = this.tarifas_repo.findById(id);
-        return tarifa.map(DTOmapper).orElseThrow();
+    public Tarifa getById(Long id) {
+        return this.tarifas_repo.findById(id).orElseThrow();
     }
 
     @Override
-    public List<TarifasDto> getAll() {
-        List<Tarifa> tarifaList = this.tarifas_repo.findAll();
-        return tarifaList.stream().map(DTOmapper).toList();
+    public List<Tarifa> getAll() {
+        return this.tarifas_repo.findAll();
     }
 }

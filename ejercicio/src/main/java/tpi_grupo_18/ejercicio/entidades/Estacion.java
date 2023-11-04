@@ -1,5 +1,6 @@
 package tpi_grupo_18.ejercicio.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,14 +33,16 @@ public class Estacion {
     private LocalDateTime fecha_hora_creacion; // Fecha y Hora en la que se creó la estación en el sistema
 
     @Column(name = "LATITUD")
-    private BigDecimal latitud; // Latitud donde se encuentra ubicada la estación
+    private double latitud; // Latitud donde se encuentra ubicada la estación
 
     @Column(name = "LONGITUD")
-    private BigDecimal longitud; // Longitud donde se encuentra ubicada la estación
+    private double longitud; // Longitud donde se encuentra ubicada la estación
 
+    @JsonIgnore
     @OneToMany(mappedBy = "estacionRetiro", fetch = FetchType.LAZY)
     public List<Alquiler> retiroList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "estacionDevolucion", fetch = FetchType.LAZY)
     public List<Alquiler> devoList;
 }
