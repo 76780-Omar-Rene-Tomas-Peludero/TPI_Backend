@@ -1,5 +1,6 @@
 package tpi_grupo_18.ejercicio.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -53,6 +54,7 @@ public class Tarifa {
     @Column(name = "MONTO_KM")
     private double monto_km; // El monto a cobrar por cada KM que separa la estación de retiro y la de devolución
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tarifa", fetch = FetchType.LAZY)
     public List<Alquiler> alquilerList;
 }

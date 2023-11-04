@@ -43,14 +43,14 @@ public class Alquiler {
     private double monto;  // Monto cobrado por el alquiler
 
     @ManyToOne
-    @JoinColumn(name = "ESTACION_RETIRO", insertable = false, updatable = false)
+    @JoinColumn(name = "ESTACION_RETIRO")
     private Estacion estacionRetiro;  // ID de la estación donde se retiró la bicicleta
 
     @ManyToOne
-    @JoinColumn(name = "ESTACION_DEVOLUCION", insertable = false, updatable = false)
+    @JoinColumn(name = "ESTACION_DEVOLUCION")
     private Estacion estacionDevolucion; // ID de la estación donde se devolvió la bicicleta
 
     @ManyToOne
-    @JoinColumn(name = "ID_TARIFA", insertable = false, updatable = false)
+    @JoinColumn(name = "ID_TARIFA")
     private Tarifa tarifa;  // ID de la tarifa que se utilizó para calcular el monto del alquiler
 }
