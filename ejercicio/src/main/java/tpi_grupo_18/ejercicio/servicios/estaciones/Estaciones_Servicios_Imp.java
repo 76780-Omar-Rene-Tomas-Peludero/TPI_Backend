@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static tpi_grupo_18.ejercicio.utils.HaversineDistanceCalculator.calculateDistance;
+
 @Service
 @RequiredArgsConstructor
 public class Estaciones_Servicios_Imp implements Estaciones_Servicios {
@@ -44,5 +46,34 @@ public class Estaciones_Servicios_Imp implements Estaciones_Servicios {
     @Override
     public List<Estacion> getAll() {
         return this.estaciones_repo.findAll();
+    }
+
+    @Override
+    public Estacion getByLongAndLat(double Longitud, double Latitud) {
+
+        // Inicializamos la variable de almacenamiento...
+        double menorDistancia = 0.0;
+        boolean primer_valor_checkeado = false;
+        long id_menorDistancia = 0;
+
+        // Almacenamos una lista de todas las estaciones existentes...
+        List<Estacion> estacionList = this.getAll();
+
+        for (Estacion estacion : estacionList) {
+            double distanciaKm = calculateDistance(Latitud,Longitud,estacion.getLatitud(),estacion.getLongitud());
+            // Asigno el menor valor posible inicial, el cual es el primero que encuentre...
+            if (!primer_valor_checkeado){
+                // Esto se ejecuta 1 vez...
+                primer_valor_checkeado = true;
+                menorDistancia = distanciaKm;
+            }
+            if (distanciaKm < menorDistancia){
+                // Si encuentra una distanca menor guarda su id
+                // y obviamente almacena la menor distancia para futuras comparaciones
+                menorDistancia = distanciaKm;
+                id_menorDistancia = estacion.getEstaciones_id();
+            }
+        }
+        return this.getById(id_menorDistancia);
     }
 }

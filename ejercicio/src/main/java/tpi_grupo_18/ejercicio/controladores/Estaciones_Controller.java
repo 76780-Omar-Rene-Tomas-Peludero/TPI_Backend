@@ -59,4 +59,14 @@ public class Estaciones_Controller {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/cercana")
+    public ResponseEntity<Estacion> cercana(@RequestParam double latitud, @RequestParam double longitud){
+        try {
+            Estacion estaciones = estaciones_servicios.getByLongAndLat(longitud, latitud);
+            return ResponseEntity.status(HttpStatus.FOUND).body(estaciones);
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
