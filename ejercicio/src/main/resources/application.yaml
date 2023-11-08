@@ -1,0 +1,20 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          default_label: keycloak
+          uri:
+          search_paths: config-data
+  application:
+    name: ejercicio
+  spring:
+    main:
+      web-application-type: reactive
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: #<URI de discovery de KeyCloak, por ejemplo: http://localhost:8080/realms/bda-realm/>
