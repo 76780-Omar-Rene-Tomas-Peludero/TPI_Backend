@@ -78,6 +78,47 @@ public class EjercicioApplication {
 //
 //	}
 
+	@Bean
+	public RouteLocator alquileresRoutes(RouteLocatorBuilder builder) {
+		return builder.routes()
+				// Recuperar listado de alquileres
+				.route(a -> a
+						// http://localhost:8081/listaAlquileres
+						.path("/listaAlquileres")
+						.filters(f -> f.rewritePath("/listaAlquileres", "/api/tpi/Alquileres/"))
+						.uri("http://localhost:8081"))
+				// Consultar alquiler por ID
+				.route(r -> r
+						// http://localhost:8081/alquilerPorId/valor
+						.path("/alquilerPorId/{id}")
+						.filters(f -> f.rewritePath("/alquilerPorId/(?<id>.*)", "/api/tpi/Alquileres/${id}"))
+						.uri("http://localhost:8081"))
+				// Ruta para retirar un alquiler
+				.route(r -> r
+						// http://localhost:8080/retirar
+						.path("/retirar")
+						.and()
+						.method(HttpMethod.POST)
+						.filters(f -> f.rewritePath("/retirar", "/api/tpi/Alquileres/retirar"))
+						.uri("http://localhost:8081"))
+				// Ruta para devolver un alquiler
+				.route(r -> r
+						// http://localhost:8080/devolver
+						.path("/devolver")
+						.and()
+						.method(HttpMethod.PUT)
+						.filters(f -> f.rewritePath("/devolver", "/api/tpi/Alquileres/devolver"))
+						.uri("http://localhost:8081"))
+				// Ruta para la conversión de moneda
+				.route(r -> r
+						.path("/pasarMoneda")
+						.and()
+						.method(HttpMethod.POST)
+						.filters(f -> f.rewritePath("/pasarMoneda", "/convertir"))
+						.uri("http://34.82.105.125:8080"))
+				.build();
+	}
+
 	// Esto funciona....
 	@Bean
 	public RouteLocator configurarRutas(RouteLocatorBuilder builder) {

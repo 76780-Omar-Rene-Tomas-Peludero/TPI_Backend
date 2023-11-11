@@ -2,6 +2,8 @@ server:
   port: 8081
 spring:
   cloud:
+  main:
+    web-application-type: reactive
 #    config:
 #      server:
 #        git:

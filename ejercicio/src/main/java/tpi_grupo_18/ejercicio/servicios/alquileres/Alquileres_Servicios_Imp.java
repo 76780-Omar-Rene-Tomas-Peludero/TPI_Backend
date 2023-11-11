@@ -1,22 +1,18 @@
 package tpi_grupo_18.ejercicio.servicios.alquileres;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import tpi_grupo_18.ejercicio.entidades.Alquiler;
 import tpi_grupo_18.ejercicio.entidades.Estacion;
 import tpi_grupo_18.ejercicio.entidades.Tarifa;
-import tpi_grupo_18.ejercicio.entidades.dtos.AlquileresDto;
-import tpi_grupo_18.ejercicio.entidades.dtos.EstacionesDto;
 import tpi_grupo_18.ejercicio.repositorios.Alquileres_Repo;
 import tpi_grupo_18.ejercicio.servicios.estaciones.Estaciones_Servicios;
 import tpi_grupo_18.ejercicio.servicios.tarifas.Tarifas_Servicios;
-
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static tpi_grupo_18.ejercicio.utils.HaversineDistanceCalculator.calculateDistance;
 
@@ -27,6 +23,10 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
     private final Alquileres_Repo alquileres_repo;
     private final Estaciones_Servicios estaciones_servicios;
     private final Tarifas_Servicios tarifas_servicios;
+
+    // hacemos la llamada a la gateway de la api conversora
+//    @Value("${conversion.api.url}")
+//    private String conversionApiUrl;
 
     @Override
     public Alquiler add(Alquiler entity) {
@@ -75,7 +75,6 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
                 null,
                 null
         );
-
         return this.alquileres_repo.save(alquiler);
     }
 
@@ -85,11 +84,24 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
         Estacion estacion = this.estaciones_servicios.getById(estacionIdDevolucion);
         Tarifa tarifa = this.tarifas_servicios.getById(tarifaId);
 
+        double monto = calcularMonto(alquiler, tarifa);
+
         alquiler.setEstado(2);
         alquiler.setEstacionDevolucion(estacion);
         alquiler.setFechaHoraDevolucion(LocalDateTime.now());
-        alquiler.setMonto(calcularMonto(alquiler, tarifa));
+        alquiler.setMonto(monto);
         alquiler.setTarifa(tarifa);
+
+//        // Realiza la llamada a la API de conversión de moneda
+//        String conversionRequest = "{\"moneda_destino\":\"" + divisa + "\",\"importe\":" + monto + "}";
+//        RestTemplate restTemplate = new RestTemplate();
+//        String convertedAmountStr = restTemplate.postForObject(conversionApiUrl, conversionRequest, String.class);
+//
+//        // Convierte el monto a double
+//        double convertedAmount = Double.parseDouble(convertedAmountStr);
+//
+//        // Añade el monto convertido al alquiler
+//        alquiler.setMonto(convertedAmount);
 
         return this.alquileres_repo.save(alquiler);
     }
