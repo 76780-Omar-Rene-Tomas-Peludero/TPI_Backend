@@ -20,7 +20,7 @@ public class Alquileres_Controller {
     private final Alquileres_Servicios alquileres_servicios;
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasRole('ROLE_CLIENTE')")
     public ResponseEntity<List<Alquiler>> getAll(){
         List<Alquiler> alquileresDtoList = alquileres_servicios.getAll();
         return ResponseEntity.ok(alquileresDtoList);
