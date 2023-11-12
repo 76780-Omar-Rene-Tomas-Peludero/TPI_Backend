@@ -1,6 +1,13 @@
 package tpi_grupo_18.ejercicio.servicios.alquileres;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -10,8 +17,15 @@ import tpi_grupo_18.ejercicio.entidades.Tarifa;
 import tpi_grupo_18.ejercicio.repositorios.Alquileres_Repo;
 import tpi_grupo_18.ejercicio.servicios.estaciones.Estaciones_Servicios;
 import tpi_grupo_18.ejercicio.servicios.tarifas.Tarifas_Servicios;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static tpi_grupo_18.ejercicio.utils.HaversineDistanceCalculator.calculateDistance;
@@ -104,6 +118,65 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
 //        alquiler.setMonto(convertedAmount);
 
         return this.alquileres_repo.save(alquiler);
+    }
+
+    @Override
+    public Alquiler devolverr(String client, Long estacionIdDevolucion, Long tarifaId, String moneda) {
+        Alquiler alquiler = this.getByIdClient(client);
+        Estacion estacion = this.estaciones_servicios.getById(estacionIdDevolucion);
+        Tarifa tarifa = this.tarifas_servicios.getById(tarifaId);
+
+        double monto = calcularMonto(alquiler, tarifa);
+
+        alquiler.setEstado(2);
+        alquiler.setEstacionDevolucion(estacion);
+        alquiler.setFechaHoraDevolucion(LocalDateTime.now());
+        alquiler.setTarifa(tarifa);
+
+        if (cambioMoneda(monto, moneda)!=0.0){
+            alquiler.setMonto(cambioMoneda(monto, moneda));
+        }
+        else {
+            alquiler.setMonto(monto);
+        }
+        return this.alquileres_repo.save(alquiler);
+    }
+
+    private double cambioMoneda(double monto , String moneda){
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://34.82.105.125:8080/convertir");
+
+        List<String> listaMonedas = new ArrayList<>();
+        listaMonedas.add("EUR");
+        listaMonedas.add("CLP");
+        listaMonedas.add("BRL");
+        listaMonedas.add("COP");
+        listaMonedas.add("PEN");
+        listaMonedas.add("GBP");
+        listaMonedas.add("USD");
+        // Verifica que las opciones ingresadas son correctas, caso contrario devolvera siempre 0.0
+        if (listaMonedas.contains(moneda)) {
+            // Configurar el cuerpo de la solicitud POST
+            String requestBody = "{\"moneda_destino\":\""+moneda+"\",\"importe\":"+monto+"}";
+            StringEntity requestEntity = new StringEntity(requestBody, "UTF-8");
+            httpPost.setEntity(requestEntity);
+            httpPost.setHeader("Content-type", "application/json");
+
+            try {
+                // Enviar la solicitud POST
+                HttpResponse response = httpClient.execute(httpPost);
+                // Obtener la respuesta
+                HttpEntity responseEntity = response.getEntity();
+                String responseBody = EntityUtils.toString(responseEntity);
+                double monto_convertido = Double.parseDouble(responseBody);
+                return monto_convertido;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0.0;
+            }
+        } else {
+            return 0.0;
+        }
     }
 
     private double calcularMonto(Alquiler alquiler, Tarifa tarifa) {

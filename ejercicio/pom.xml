@@ -120,6 +120,12 @@
 			<artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Esto es para la implementacion del convertidor de moneda-->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version> <!-- Verifica la última versión en el repositorio Maven -->
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
