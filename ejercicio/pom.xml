@@ -84,16 +84,16 @@
 		<!--Dependencia para seguridad-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-oauth2-jose</artifactId>
-			<version>6.1.4</version>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<!--Dependencia para Api-Gateway-->
 		<dependency>
@@ -126,6 +126,7 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.5.13</version> <!-- Verifica la última versión en el repositorio Maven -->
 		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

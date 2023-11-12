@@ -3,6 +3,7 @@ package tpi_grupo_18.ejercicio.controladores;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tpi_grupo_18.ejercicio.entidades.Alquiler;
 import tpi_grupo_18.ejercicio.entidades.dtos.AlquileresDto;
@@ -19,6 +20,7 @@ public class Alquileres_Controller {
     private final Alquileres_Servicios alquileres_servicios;
 
     @GetMapping("/")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<List<Alquiler>> getAll(){
         List<Alquiler> alquileresDtoList = alquileres_servicios.getAll();
         return ResponseEntity.ok(alquileresDtoList);
