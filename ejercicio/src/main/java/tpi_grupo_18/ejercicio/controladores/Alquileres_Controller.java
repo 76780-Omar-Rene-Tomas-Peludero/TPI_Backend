@@ -53,8 +53,17 @@ public class Alquileres_Controller {
     }
 
     @PutMapping("/devolver")
-    public ResponseEntity<Alquiler> devolver(@RequestParam String client, @RequestParam Long estacionId, @RequestParam Long tarifaId) {
+    public ResponseEntity<Alquiler> devolver(@RequestParam String client, @RequestParam Long estacionId,
+                                             @RequestParam Long tarifaId) {
         Alquiler alquiler = alquileres_servicios.devolver(client, estacionId, tarifaId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(alquiler);
+    }
+
+
+    @PutMapping("/devolverr")
+    public ResponseEntity<Alquiler> devolverr(@RequestParam String client, @RequestParam Long estacionId,
+                                             @RequestParam Long tarifaId, @RequestParam String moneda) {
+        Alquiler alquiler = alquileres_servicios.devolverr(client, estacionId, tarifaId, moneda);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(alquiler);
     }
 
