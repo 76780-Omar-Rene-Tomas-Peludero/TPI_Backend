@@ -1,6 +1,14 @@
 package tpi_grupo_18.ejercicio.servicios.alquileres;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import tpi_grupo_18.ejercicio.entidades.Alquiler;
 import tpi_grupo_18.ejercicio.entidades.Estacion;
@@ -14,6 +22,7 @@ import tpi_grupo_18.ejercicio.servicios.tarifas.Tarifas_Servicios;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -92,6 +101,67 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
         alquiler.setTarifa(tarifa);
 
         return this.alquileres_repo.save(alquiler);
+    }
+
+    @Override
+    public Alquiler devolverr(String client, Long estacionIdDevolucion, Long tarifaId, String moneda) {
+        Alquiler alquiler = this.getByIdClient(client);
+        Estacion estacion = this.estaciones_servicios.getById(estacionIdDevolucion);
+        Tarifa tarifa = this.tarifas_servicios.getById(tarifaId);
+
+        alquiler.setEstado(2);
+        alquiler.setEstacionDevolucion(estacion);
+        alquiler.setFechaHoraDevolucion(LocalDateTime.now());
+        alquiler.setTarifa(tarifa);
+
+        double monto = calcularMonto(alquiler, tarifa);
+
+        if (cambioMoneda(monto, moneda)!=0.0){
+            alquiler.setMonto(cambioMoneda(monto, moneda));
+        }
+        else {
+            alquiler.setMonto(monto);
+        }
+        return this.alquileres_repo.save(alquiler);
+    }
+
+    private double cambioMoneda(double monto , String moneda){
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://34.82.105.125:8080/convertir");
+
+        List<String> listaMonedas = new ArrayList<>();
+        listaMonedas.add("EUR");
+        listaMonedas.add("CLP");
+        listaMonedas.add("BRL");
+        listaMonedas.add("COP");
+        listaMonedas.add("PEN");
+        listaMonedas.add("GBP");
+        listaMonedas.add("USD");
+        // Verifica que las opciones ingresadas son correctas, caso contrario devolvera siempre 0.0
+        if (listaMonedas.contains(moneda)) {
+            // Configurar el cuerpo de la solicitud POST
+            String requestBody = "{\"moneda_destino\":\""+moneda+"\",\"importe\":"+monto+"}";
+            StringEntity requestEntity = new StringEntity(requestBody, "UTF-8");
+            httpPost.setEntity(requestEntity);
+            httpPost.setHeader("Content-type", "application/json");
+
+            try {
+                // Enviar la solicitud POST
+                HttpResponse response = httpClient.execute(httpPost);
+                // Obtener la respuesta
+                HttpEntity responseEntity = response.getEntity();
+                String responseBody = EntityUtils.toString(responseEntity);
+                JSONObject jsonObject = new JSONObject(responseBody);
+
+                double monto_convertido = jsonObject.getDouble("importe");
+                return monto_convertido;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 0.0;
+            }
+        } else {
+            return 0.0;
+        }
     }
 
     private double calcularMonto(Alquiler alquiler, Tarifa tarifa) {

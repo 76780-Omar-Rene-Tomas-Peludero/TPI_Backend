@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tpi_grupo_18.ejercicio.entidades.Alquiler;
-import tpi_grupo_18.ejercicio.entidades.dtos.AlquileresDto;
 import tpi_grupo_18.ejercicio.servicios.alquileres.Alquileres_Servicios;
 
 import java.util.List;
@@ -20,13 +19,14 @@ public class Alquileres_Controller {
     private final Alquileres_Servicios alquileres_servicios;
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRADOR')")
     public ResponseEntity<List<Alquiler>> getAll(){
         List<Alquiler> alquileresDtoList = alquileres_servicios.getAll();
         return ResponseEntity.ok(alquileresDtoList);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRADOR')")
     public ResponseEntity<Alquiler> getById(@PathVariable Long id){
         try {
             Alquiler alquileres = alquileres_servicios.getById(id);
@@ -37,6 +37,7 @@ public class Alquileres_Controller {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMINISTRADOR')")
     public ResponseEntity<Alquiler> delete(@PathVariable Long id){
         try {
             Alquiler alquileres = alquileres_servicios.delete(id);
@@ -47,14 +48,23 @@ public class Alquileres_Controller {
     }
 
     @PostMapping("/retirar")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<Alquiler> retirar(@RequestParam String client, @RequestParam Long estacionId){
         Alquiler alquileres = alquileres_servicios.retirar(client, estacionId);
         return ResponseEntity.status(HttpStatus.CREATED).body(alquileres);
     }
 
     @PutMapping("/devolver")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<Alquiler> devolver(@RequestParam String client, @RequestParam Long estacionId, @RequestParam Long tarifaId) {
         Alquiler alquiler = alquileres_servicios.devolver(client, estacionId, tarifaId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(alquiler);
+    }
+    @PutMapping("/devolverr")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    public ResponseEntity<Alquiler> devolverr(@RequestParam String client, @RequestParam Long estacionId,
+                                              @RequestParam Long tarifaId, @RequestParam String moneda) {
+        Alquiler alquiler = alquileres_servicios.devolverr(client, estacionId, tarifaId, moneda);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(alquiler);
     }
 

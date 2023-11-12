@@ -25,9 +25,6 @@ public class Estaciones_Servicios_Imp implements Estaciones_Servicios {
 
     @Override
     public Estacion update(Estacion entity) {
-        /*Optional<Estacion> estacion = Stream.of(entity).map(mapper).findFirst();
-        estacion.ifPresent(estaciones_repo::save);
-        return estacion.map(DTOmapper).orElseThrow();*/
         return null;
     }
 
@@ -75,5 +72,15 @@ public class Estaciones_Servicios_Imp implements Estaciones_Servicios {
             }
         }
         return this.getById(id_menorDistancia);
+    }
+
+    @Override
+    public Estacion update(Long id, String nombre, Double latitud, Double longitud) {
+        Estacion exist = this.getById(id);
+        exist.setNombre(nombre);
+        exist.setLatitud(latitud);
+        exist.setLongitud(longitud);
+
+        return this.estaciones_repo.save(exist);
     }
 }

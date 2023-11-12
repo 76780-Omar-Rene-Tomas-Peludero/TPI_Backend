@@ -8,4 +8,5 @@ public interface Alquileres_Servicios extends Servicios_grl<Alquiler,Long> {
     Alquiler getByIdClient(String client);
     Alquiler retirar(String client, Long estacionIdRetirar);
     Alquiler devolver(String client, Long estacionIdDevolucion, Long tarifaId);
+    Alquiler devolverr(String client, Long estacionIdDevolucion, Long tarifaId, String moneda);
 }
