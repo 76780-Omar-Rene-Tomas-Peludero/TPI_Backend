@@ -13,19 +13,14 @@ import org.springframework.stereotype.Service;
 import tpi_grupo_18.ejercicio.entidades.Alquiler;
 import tpi_grupo_18.ejercicio.entidades.Estacion;
 import tpi_grupo_18.ejercicio.entidades.Tarifa;
-import tpi_grupo_18.ejercicio.entidades.dtos.AlquileresDto;
-import tpi_grupo_18.ejercicio.entidades.dtos.EstacionesDto;
 import tpi_grupo_18.ejercicio.repositorios.Alquileres_Repo;
 import tpi_grupo_18.ejercicio.servicios.estaciones.Estaciones_Servicios;
 import tpi_grupo_18.ejercicio.servicios.tarifas.Tarifas_Servicios;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static tpi_grupo_18.ejercicio.utils.HaversineDistanceCalculator.calculateDistance;
 
@@ -89,22 +84,7 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
     }
 
     @Override
-    public Alquiler devolver(String client, Long estacionIdDevolucion, Long tarifaId) {
-        Alquiler alquiler = this.getByIdClient(client);
-        Estacion estacion = this.estaciones_servicios.getById(estacionIdDevolucion);
-        Tarifa tarifa = this.tarifas_servicios.getById(tarifaId);
-
-        alquiler.setEstado(2);
-        alquiler.setEstacionDevolucion(estacion);
-        alquiler.setFechaHoraDevolucion(LocalDateTime.now());
-        alquiler.setMonto(calcularMonto(alquiler, tarifa));
-        alquiler.setTarifa(tarifa);
-
-        return this.alquileres_repo.save(alquiler);
-    }
-
-    @Override
-    public Alquiler devolverr(String client, Long estacionIdDevolucion, Long tarifaId, String moneda) {
+    public Alquiler devolver(String client, Long estacionIdDevolucion, Long tarifaId, String moneda) {
         Alquiler alquiler = this.getByIdClient(client);
         Estacion estacion = this.estaciones_servicios.getById(estacionIdDevolucion);
         Tarifa tarifa = this.tarifas_servicios.getById(tarifaId);
@@ -153,8 +133,7 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
                 String responseBody = EntityUtils.toString(responseEntity);
                 JSONObject jsonObject = new JSONObject(responseBody);
 
-                double monto_convertido = jsonObject.getDouble("importe");
-                return monto_convertido;
+                return jsonObject.getDouble("importe");
             } catch (Exception e) {
                 e.printStackTrace();
                 return 0.0;
