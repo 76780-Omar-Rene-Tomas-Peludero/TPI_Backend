@@ -3,12 +3,9 @@ package tpi_grupo_18.ejercicio.servicios.estaciones;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tpi_grupo_18.ejercicio.entidades.Estacion;
-import tpi_grupo_18.ejercicio.entidades.dtos.EstacionesDto;
 import tpi_grupo_18.ejercicio.repositorios.Estaciones_Repo;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static tpi_grupo_18.ejercicio.utils.HaversineDistanceCalculator.calculateDistance;
 

@@ -3,17 +3,14 @@ package tpi_grupo_18.ejercicio.controladores;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tpi_grupo_18.ejercicio.entidades.Tarifa;
-import tpi_grupo_18.ejercicio.entidades.dtos.TarifasDto;
 import tpi_grupo_18.ejercicio.servicios.tarifas.Tarifas_Servicios;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@PreAuthorize("hasAuthority('NOTROLE')")
 @RequestMapping("/api/tpi/Tarifas")
 @RequiredArgsConstructor
 public class Tarifas_Controller {
