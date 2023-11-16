@@ -86,31 +86,6 @@ class Alquileres_ControllerTest {
         Assertions.assertNull(alquiler);
     }
 
-//    @Test
-//    public void retirarTest() {
-//        // Datos de prueba
-//        String cliente = "cliente";
-//        Long estacionIdRetirar = 1L;
-//
-//        Alquiler alquilerEspecifico = new Alquiler(
-//                0,
-//                cliente,
-//                1,
-//                LocalDateTime.now(),
-//                null,
-//                0.0,
-//                estaciones_servicios.getById(estacionIdRetirar),
-//                null,
-//                null
-//        );
-//
-//        // Llamada al método que quieres probar
-//        alquileres_servicios.retirar(cliente, estacionIdRetirar);
-//
-//        // Print actual and expected Alquiler objects for debugging
-//        System.out.println("Actual Alquiler: " + alquilerEspecifico.toString());
-//        Mockito.verify(alquileres_repo).save(eq(alquilerEspecifico));
-//    }
 //    @InjectMocks
 //    private Alquileres_Controller controlador;
 //
