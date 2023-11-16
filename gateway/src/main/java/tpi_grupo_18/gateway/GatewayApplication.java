@@ -1,13 +1,13 @@
-package tpi_grupo_18.ejercicio;
+package tpi_grupo_18.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EjercicioApplication {
+public class GatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EjercicioApplication.class, args);
+		SpringApplication.run(GatewayApplication.class, args);
 	}
 
 }

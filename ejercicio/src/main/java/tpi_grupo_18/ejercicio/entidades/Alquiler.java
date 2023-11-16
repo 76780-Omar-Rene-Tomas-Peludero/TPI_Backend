@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tpi_grupo_18.ejercicio.entidades.dtos.EstacionesDto;
-import tpi_grupo_18.ejercicio.entidades.dtos.TarifasDto;
 
 import java.time.LocalDateTime;
 

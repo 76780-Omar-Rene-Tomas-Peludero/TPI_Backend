@@ -3,12 +3,9 @@ package tpi_grupo_18.ejercicio.servicios.estaciones;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tpi_grupo_18.ejercicio.entidades.Estacion;
-import tpi_grupo_18.ejercicio.entidades.dtos.EstacionesDto;
 import tpi_grupo_18.ejercicio.repositorios.Estaciones_Repo;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static tpi_grupo_18.ejercicio.utils.HaversineDistanceCalculator.calculateDistance;
 
@@ -25,9 +22,6 @@ public class Estaciones_Servicios_Imp implements Estaciones_Servicios {
 
     @Override
     public Estacion update(Estacion entity) {
-        /*Optional<Estacion> estacion = Stream.of(entity).map(mapper).findFirst();
-        estacion.ifPresent(estaciones_repo::save);
-        return estacion.map(DTOmapper).orElseThrow();*/
         return null;
     }
 
@@ -75,5 +69,15 @@ public class Estaciones_Servicios_Imp implements Estaciones_Servicios {
             }
         }
         return this.getById(id_menorDistancia);
+    }
+
+    @Override
+    public Estacion update(Long id, String nombre, Double latitud, Double longitud) {
+        Estacion exist = this.getById(id);
+        exist.setNombre(nombre);
+        exist.setLatitud(latitud);
+        exist.setLongitud(longitud);
+
+        return this.estaciones_repo.save(exist);
     }
 }

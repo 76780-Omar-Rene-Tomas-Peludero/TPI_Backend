@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tpi_grupo_18.ejercicio.entidades.Tarifa;
-import tpi_grupo_18.ejercicio.entidades.dtos.TarifasDto;
 import tpi_grupo_18.ejercicio.servicios.tarifas.Tarifas_Servicios;
 
 import java.util.List;
