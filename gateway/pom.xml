@@ -48,7 +48,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
 		</dependency>
-		<!-- Dependencia para Testing-->
+    		<!-- Dependencia para Testing-->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -61,7 +61,7 @@
 			<version>5.5.0</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+  </dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
