@@ -47,15 +47,20 @@ public class GWConfig {
     }
 
     @Bean
-    public RouteLocator configRoutes(RouteLocatorBuilder builder, @Value("${api-url-microservicio}") String uri) {
+    public RouteLocator configRouteAlquiler(RouteLocatorBuilder builder, @Value("${api-url-microservicio_alquileres}") String uri) {
         return builder.routes()
-                .route(p -> p.path("/estaciones/**")
-                        .filters(f -> f.rewritePath("/estaciones", "/api/tpi/Estaciones"))
-                        .uri(uri))
                 .route(p -> p.path("/alquileres/**")
                         .filters(f -> f.rewritePath("/alquileres", "/api/tpi/Alquileres"))
                         .uri(uri))
                 .build();
+    }
+
+    @Bean
+    public RouteLocator configRouteEstacion(RouteLocatorBuilder builder, @Value("${api-url-microservicio_estaciones}") String uri){
+        return builder.routes()
+                .route(p -> p.path("/estaciones/**")
+                        .filters(f -> f.rewritePath("/estaciones", "/api/tpi/Estaciones"))
+                        .uri(uri)).build();
     }
 
     /*@Bean
