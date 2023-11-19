@@ -29,7 +29,6 @@ import java.util.Map;
 public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
 
     private final Alquileres_Repo alquileres_repo;
-//    private final Estaciones_Servicios estaciones_servicios;
     private final EstacionService estacionService;
     private final Tarifas_Servicios tarifas_servicios;
 
@@ -93,14 +92,6 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
         alquiler.setTarifa(tarifa);
         alquiler.setMonto(calcularMonto(alquiler,tarifa));
 
-//        double monto = calcularMonto(alquiler, tarifa);
-//
-//        if (cambioMoneda(monto, moneda)!=0.0){
-//            alquiler.setMonto(cambioMoneda(monto, moneda));
-//        }
-//        else {
-//            alquiler.setMonto(monto);
-//        }
         return this.alquileres_repo.save(alquiler);
     }
 
@@ -216,10 +207,6 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
         double monto_total_facturado = 0.0;
         double costoMin = 0.0;
         double costoHora = 0.0;
-//        double latitud_retiro = this.estacionService.getEstacionById(alquiler.getEstacionRetiroId()).getLatitud();
-//        double longitud_retiro = this.estacionService.getEstacionById(alquiler.getEstacionRetiroId()).getLongitud();
-//        double latitud_devolucion = this.estacionService.getEstacionById(alquiler.getEstacionDevolucionId()).getLatitud();
-//        double longitud_devolucion = this.estacionService.getEstacionById(alquiler.getEstacionDevolucionId()).getLongitud();
 
         // Calcular costo por kilómetro.
         double distanciaEnKm = HaversineDistanceCalculator.calculateDistance(
@@ -227,9 +214,7 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
                 alquiler.getEstacionRetiro().getLongitud(),
                 alquiler.getEstacionDevolucion().getLatitud(),
                 alquiler.getEstacionDevolucion().getLongitud());
-//        double distanciaEnKm = HaversineDistanceCalculator.calculateDistance(
-//                latitud_retiro,longitud_retiro,latitud_devolucion,longitud_devolucion
-//        );
+
         double costoPorKm = tarifa.getMonto_km() * distanciaEnKm;
 
         //Calculamos los minutos y horas de diferencia entre el retiro y la devolucion.
