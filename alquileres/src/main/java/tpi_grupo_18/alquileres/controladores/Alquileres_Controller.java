@@ -57,6 +57,6 @@ public class Alquileres_Controller {
 
         Map<String, Object> respuesta = alquileres_servicios.toHashMap(alquiler, moneda);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(respuesta);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(respuesta);
     }
 }

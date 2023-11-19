@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EstacionService implements Servicios_grl<Estacion, Long> {
 
-    private String estacionesApiUrl = "http://localhost:8080/api/tpi/Estaciones";  // URL de la API de Estaciones
+    private String estacionesApiUrl = "http://localhost:8082/api/tpi/Estaciones";  // URL de la API de Estaciones
     private final ObjectMapper objectMapper; // Necesitarás la biblioteca Jackson ObjectMapper
     private final RestTemplate restTemplate;
 

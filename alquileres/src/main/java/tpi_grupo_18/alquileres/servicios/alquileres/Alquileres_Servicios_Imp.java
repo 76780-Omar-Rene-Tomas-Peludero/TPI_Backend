@@ -148,20 +148,25 @@ public class Alquileres_Servicios_Imp implements Alquileres_Servicios{
         Map<String, Object> respuesta = new HashMap<>();
 
         // Agrega información sobre el alquiler
-        respuesta.put("id", alquiler.getId());
-        respuesta.put("idCliente", alquiler.getIdCliente());
-        respuesta.put("estado", alquiler.getEstado());
-        respuesta.put("fechaHoraRetiro", alquiler.getFechaHoraRetiro());
-        respuesta.put("fechaHoraDevolucion", alquiler.getFechaHoraDevolucion());
+        Map<String, Object> alquileres = new HashMap<>();
+        alquileres.put("id", alquiler.getId());
+        alquileres.put("idCliente", alquiler.getIdCliente());
+        alquileres.put("estado", alquiler.getEstado());
+        alquileres.put("fechaHoraRetiro", alquiler.getFechaHoraRetiro());
+        alquileres.put("fechaHoraDevolucion", alquiler.getFechaHoraDevolucion());
+        respuesta.put("alquiler", alquileres);
 
         // Agregar el tipo de moneda al mapa si se proporciona
+        Map<String, Object> montoMap = new HashMap<>();
+
         if (moneda != null && !moneda.isEmpty()) {
-            respuesta.put("monto", this.cambioMoneda(alquiler.getMonto(), moneda));
-            respuesta.put("tipoMoneda", moneda);
+            montoMap.put("monto", this.cambioMoneda(alquiler.getMonto(), moneda));
+            montoMap.put("tipoMoneda", moneda);
         } else {
-            respuesta.put("monto", alquiler.getMonto());
-            respuesta.put("tipoMoneda", "ARS");
+            montoMap.put("monto", alquiler.getMonto());
+            montoMap.put("tipoMoneda", "ARS");
         }
+        respuesta.put("monto", montoMap);
 
         // Agrega información sobre la estación de retiro al mapa
         if (alquiler.getEstacionRetiro() != null) {
